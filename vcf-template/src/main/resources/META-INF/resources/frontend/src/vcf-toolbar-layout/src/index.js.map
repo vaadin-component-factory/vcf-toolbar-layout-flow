@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,gBAAgB,IAAI,gBAAgB,EAAE,MAAM,mCAAmC,CAAC","sourcesContent":["export { VcfToolbarLayout as VcfToolbarLayout } from './component/vcf-toolbar-layout.js';"]}
