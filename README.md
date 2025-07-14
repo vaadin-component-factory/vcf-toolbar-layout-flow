@@ -24,7 +24,16 @@ This component is part of Vaadin Component Factory.
 
 ## Running the component demo
 Run from the command line:
-- `mvn  -pl vcf-toolbar-layout-flow-demo -Pwar install jetty:run`
+- `mvn -pl vcf-toolbar-layout-flow-demo -Pwar install jetty:run`
+
+Then navigate to `http://localhost:8080/`
+
+## Running the component demo in docker
+Build the image by running this from the command line:
+- `docker build -t vcf-toolbar-layout-flow-demo .`
+
+Run the image by running this from the command line:
+- `docker run -p 8080:8080 vcf-toolbar-layout-flow-demo`
 
 Then navigate to `http://localhost:8080/`
 
