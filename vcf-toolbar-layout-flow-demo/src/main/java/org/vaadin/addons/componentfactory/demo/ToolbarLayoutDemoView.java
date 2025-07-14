@@ -20,19 +20,19 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.menubar.MenuBarVariant;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.demo.DemoView;
 import com.vaadin.flow.router.Route;
 import org.vaadin.addons.componentfactory.toolbarlayout.ToolbarLayout;
 import org.vaadin.addons.componentfactory.toolbarlayout.ToolbarLayoutVariant;
+
+import java.util.Arrays;
 
 /**
  * View for {@link ToolbarLayout} demo.
@@ -41,10 +41,10 @@ import org.vaadin.addons.componentfactory.toolbarlayout.ToolbarLayoutVariant;
  */
 @SuppressWarnings("serial")
 @Route("")
-public class ToolbarLayoutDemoView extends DemoView {
+public class ToolbarLayoutDemoView extends VerticalLayout {
 
-    @Override
-    public void initView() {
+    public ToolbarLayoutDemoView() {
+        add(new H1("Use examples"));
         createBasicDemo();
         createMultiComponentDemo();
         createReverseCollapseDemo();
@@ -72,6 +72,28 @@ public class ToolbarLayoutDemoView extends DemoView {
 
         toolbarLayout.setId("basic-demo");
         addCard("Basic Demo", createResizableContainer(toolbarLayout));
+    }
+
+    private void addCard(String title, Component content, String... desc) {
+        var card = new Div();
+        card.getStyle()
+                .set("border", "solid 1px rgba(0, 0, 0, 0.1)")
+                .set("display", "flex")
+                .set("flex-direction", "column")
+                .set("padding", "10px")
+                .set("gap", "10px")
+                .set("width", "100%")
+                .set("max-width", "800px");
+
+        var header = new H3(title);
+        header.getStyle().set("font-size", "1rem");
+        card.add(header);
+
+        if (desc.length > 0) {
+            Arrays.stream(desc).forEach(s -> card.add(new Paragraph(s)));
+        }
+        card.add(content);
+        add(card);
     }
 
     private void createMultiComponentDemo() {
