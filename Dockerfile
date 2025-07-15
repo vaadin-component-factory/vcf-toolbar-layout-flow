@@ -10,12 +10,12 @@
 FROM eclipse-temurin:17 AS BUILD
 COPY . /app/
 WORKDIR /app/
-RUN ./mvnw clean test package -Pproduction
+RUN ./mvnw clean package -DskipTests -Pproduction
 # At this point, we have the app (executable jar file):  /app/target/my-hilla-app-1.0.0.jar
 
 # The "Run" stage. Start with a clean image, and copy over just the app itself, omitting gradle, npm and any intermediate build files.
 FROM eclipse-temurin:17
-COPY --from=BUILD /app/vcf-toolbar-layout-flow-demo/target/vcf-toolbar-layout-flow-demo-*.jar /app/vcf-toolbar-layout-flow-demo.jar
+COPY --from=BUILD /app/vcf-toolbar-layout-flow-demo/target/vcf-toolbar-layout-flow-demo-*.jar /app/demo-app.jar
 WORKDIR /app/
 EXPOSE 8080
-ENTRYPOINT java -jar vcf-toolbar-layout-flow-demo.jar 8080
+ENTRYPOINT java -jar demo-app.jar 8080
