@@ -18,4 +18,4 @@ FROM eclipse-temurin:17
 COPY --from=BUILD /app/vcf-toolbar-layout-flow-demo/target/vcf-toolbar-layout-flow-demo-*.jar /app/demo-app.jar
 WORKDIR /app/
 EXPOSE 8080
-ENTRYPOINT java -jar demo-app.jar 8080
+ENTRYPOINT java -jar demo-app.jar
