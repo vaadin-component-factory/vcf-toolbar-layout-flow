@@ -20,19 +20,20 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.menubar.MenuBarVariant;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import org.vaadin.addons.componentfactory.demo.helpers.AbstractDemoView;
 import org.vaadin.addons.componentfactory.toolbarlayout.ToolbarLayout;
 import org.vaadin.addons.componentfactory.toolbarlayout.ToolbarLayoutVariant;
-
-import java.util.Arrays;
 
 /**
  * View for {@link ToolbarLayout} demo.
@@ -41,9 +42,10 @@ import java.util.Arrays;
  */
 @SuppressWarnings("serial")
 @Route("")
-public class ToolbarLayoutDemoView extends VerticalLayout {
+public class ToolbarLayoutDemoView extends AbstractDemoView {
 
-    public ToolbarLayoutDemoView() {
+    @Override
+    protected void initView() {
         add(new H1("Use examples"));
         createBasicDemo();
         createMultiComponentDemo();
@@ -56,7 +58,23 @@ public class ToolbarLayoutDemoView extends VerticalLayout {
 
         // show the helper methods used in the demos
         addCard("Demo Helper Methods", new Span("Below are some of the helper methods used in the demos."));
+
     }
+
+//    public ToolbarLayoutDemoView() {
+//        add(new H1("Use examples"));
+//        createBasicDemo();
+//        createMultiComponentDemo();
+//        createReverseCollapseDemo();
+//        createDebounceDelayDemo();
+//        createMultiLevelDemo();
+//        createFixedWidthPrefixDemo();
+//        createHideIconsDemo();
+//        createMenuBarApiDemo();
+//
+//        // show the helper methods used in the demos
+//        addCard("Demo Helper Methods", new Span("Below are some of the helper methods used in the demos."));
+//    }
 
     private void createBasicDemo() {
         // begin-source-example
@@ -74,27 +92,27 @@ public class ToolbarLayoutDemoView extends VerticalLayout {
         addCard("Basic Demo", createResizableContainer(toolbarLayout));
     }
 
-    private void addCard(String title, Component content, String... desc) {
-        var card = new Div();
-        card.getStyle()
-                .set("border", "solid 1px rgba(0, 0, 0, 0.1)")
-                .set("display", "flex")
-                .set("flex-direction", "column")
-                .set("padding", "10px")
-                .set("gap", "10px")
-                .set("width", "100%")
-                .set("max-width", "800px");
-
-        var header = new H3(title);
-        header.getStyle().set("font-size", "1rem");
-        card.add(header);
-
-        if (desc.length > 0) {
-            Arrays.stream(desc).forEach(s -> card.add(new Paragraph(s)));
-        }
-        card.add(content);
-        add(card);
-    }
+//    private void addCard(String title, Component content, String... desc) {
+//        var card = new Div();
+//        card.getStyle()
+//                .set("border", "solid 1px rgba(0, 0, 0, 0.1)")
+//                .set("display", "flex")
+//                .set("flex-direction", "column")
+//                .set("padding", "10px")
+//                .set("gap", "10px")
+//                .set("width", "100%")
+//                .set("max-width", "800px");
+//
+//        var header = new H3(title);
+//        header.getStyle().set("font-size", "1rem");
+//        card.add(header);
+//
+//        if (desc.length > 0) {
+//            Arrays.stream(desc).forEach(s -> card.add(new Paragraph(s)));
+//        }
+//        card.add(content);
+//        add(card);
+//    }
 
     private void createMultiComponentDemo() {
         // begin-source-example
