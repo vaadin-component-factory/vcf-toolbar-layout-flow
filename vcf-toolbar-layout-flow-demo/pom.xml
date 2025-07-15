@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>vcf-toolbar-layout-flow-demo</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>Toolbar Layout Addon Demo</name>
 
     <version>1.0.2-SNAPSHOT</version>
@@ -17,12 +17,18 @@
     </organization>
 
     <properties>
-        <vaadin.version>24.7.2</vaadin.version>
+        <vaadin.version>24.8.3</vaadin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.3</version>
+    </parent>
 
     <dependencyManagement>
         <dependencies>
@@ -37,18 +43,33 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Flow -->
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>flow-client</artifactId>
+            <!-- Replace artifactId with vaadin-core to use only free components -->
+            <artifactId>vaadin</artifactId>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>flow-data</artifactId>
+            <artifactId>vaadin-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>flow-html-components</artifactId>
+            <artifactId>vaadin-testbench</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- Component -->
@@ -74,41 +95,19 @@
     </dependencies>
 
     <build>
-        <defaultGoal>jetty:run</defaultGoal>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>3.4.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-            </plugin>
-            <!-- We use jetty plugin, replace it with your favourite developing servlet container -->
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>11.0.25</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- Clean build and startup time for Vaadin apps sometimes may exceed
+                     the default Spring Boot's 30sec timeout.  -->
                 <configuration>
-                    <scanIntervalSeconds>1</scanIntervalSeconds>
+                    <wait>500</wait>
+                    <maxAttempts>240</maxAttempts>
                 </configuration>
             </plugin>
+
             <!--
                 Take care of synchronizing java dependencies and imports in
                 package.json and main.js files.
@@ -127,23 +126,22 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <!-- by default src/main/resources is copied; add src/main/java too so we can parse the java source code in demos -->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.java</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
     <profiles>
         <profile>
             <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
-            <properties>
-                <vaadin.productionMode>true</vaadin.productionMode>
-            </properties>
-
-            <dependencies>
-                <dependency>
-                    <groupId>com.vaadin</groupId>
-                    <artifactId>flow-server-production-mode</artifactId>
-                </dependency>
-            </dependencies>
-
             <build>
                 <plugins>
                     <plugin>
@@ -158,10 +156,58 @@
                                 <phase>compile</phase>
                             </execution>
                         </executions>
+                        <configuration>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
-    </profiles>
 
+        <profile>
+            <id>it</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>start-spring-boot</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>stop-spring-boot</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Runs the integration tests (*IT) after the server is started -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <trimStackTrace>false</trimStackTrace>
+                            <enableAssertions>true</enableAssertions>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
 </project>
