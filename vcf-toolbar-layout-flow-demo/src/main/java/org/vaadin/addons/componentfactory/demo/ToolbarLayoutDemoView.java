@@ -61,21 +61,6 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
 
     }
 
-//    public ToolbarLayoutDemoView() {
-//        add(new H1("Use examples"));
-//        createBasicDemo();
-//        createMultiComponentDemo();
-//        createReverseCollapseDemo();
-//        createDebounceDelayDemo();
-//        createMultiLevelDemo();
-//        createFixedWidthPrefixDemo();
-//        createHideIconsDemo();
-//        createMenuBarApiDemo();
-//
-//        // show the helper methods used in the demos
-//        addCard("Demo Helper Methods", new Span("Below are some of the helper methods used in the demos."));
-//    }
-
     private void createBasicDemo() {
         // begin-source-example
         // source-example-heading: Basic Demo
