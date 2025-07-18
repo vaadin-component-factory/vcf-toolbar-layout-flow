@@ -32,10 +32,14 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("serial")
 @Tag("vcf-toolbar-layout")
-@NpmPackage(value = "@vaadin-component-factory/vcf-toolbar-layout", version = "1.0.1")
+@NpmPackage(value = "@vaadin-component-factory/vcf-toolbar-layout", version = "1.0.3")
 @JsModule("@vaadin-component-factory/vcf-toolbar-layout/dist/src/vcf-toolbar-layout.js")
+// for local testing, copy files from js project to: src/main/resources/META-INF/resources/frontend/
+// @JsModule("src/vcf-toolbar-layout.js")
 public class ToolbarLayout extends Component implements HasOrderedComponents, HasSize, HasStyle, HasThemeVariant<ToolbarLayoutVariant>
 {
+    private static final String OVERFLOW_BUTTON_SLOT = "overflow-button";
+
     // properties passed to children MenuBar components
     private boolean isOpenHover = false;
     private boolean isDropdownIndicatorShown = true;
@@ -339,6 +343,27 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
      */
     public boolean isReverseCollapseOrder() {
         return getElement().getProperty("reverseCollapse", false);
+    }
+
+    /**
+     * Provide a custom button to be used as the overflow button. This will replace any other overflow
+     * button that may have been set previously.
+     *
+     * @param overflowButton the button to use as the overflow button, or {@code null} to remove any existing overflow button
+     *                       and revert to the default overflow button
+     */
+    public void setOverflowButton(Button overflowButton) {
+        // remove current overflow button if it exists
+        getChildren()
+                .filter(c -> OVERFLOW_BUTTON_SLOT.equals(c.getElement().getAttribute("slot")))
+                .forEach(this::remove);
+
+        // add new button if provided
+        if (overflowButton != null) {
+            // must set slot to overflow-button in order for component to recognize it as the overflow button
+            overflowButton.getElement().setAttribute("slot", OVERFLOW_BUTTON_SLOT);
+            add(overflowButton);
+        }
     }
 
     private MenuBar createMenuBar() {
