@@ -49,6 +49,7 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         add(new H1("Use examples"));
         createBasicDemo();
         createMultiComponentDemo();
+        createCustomOverflowButtonDemo();
         createReverseCollapseDemo();
         createDebounceDelayDemo();
         createMultiLevelDemo();
@@ -76,28 +77,6 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         toolbarLayout.setId("basic-demo");
         addCard("Basic Demo", createResizableContainer(toolbarLayout));
     }
-
-//    private void addCard(String title, Component content, String... desc) {
-//        var card = new Div();
-//        card.getStyle()
-//                .set("border", "solid 1px rgba(0, 0, 0, 0.1)")
-//                .set("display", "flex")
-//                .set("flex-direction", "column")
-//                .set("padding", "10px")
-//                .set("gap", "10px")
-//                .set("width", "100%")
-//                .set("max-width", "800px");
-//
-//        var header = new H3(title);
-//        header.getStyle().set("font-size", "1rem");
-//        card.add(header);
-//
-//        if (desc.length > 0) {
-//            Arrays.stream(desc).forEach(s -> card.add(new Paragraph(s)));
-//        }
-//        card.add(content);
-//        add(card);
-//    }
 
     private void createMultiComponentDemo() {
         // begin-source-example
@@ -133,6 +112,22 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
 
         toolbarLayout.setId("multi-component-demo");
         addCard("Multi Component Demo", createResizableContainer(toolbarLayout));
+    }
+
+    private void createCustomOverflowButtonDemo() {
+        // begin-source-example
+        // source-example-heading: Custom Overflow Button Demo
+        ToolbarLayout toolbarLayout = new ToolbarLayout();
+
+        Button customOverflowButton = new Button("Open");
+        customOverflowButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        toolbarLayout.setOverflowButton(customOverflowButton);
+
+        addComponentsToToolbar(toolbarLayout);
+        // end-source-example
+
+        toolbarLayout.setId("custom-overflow-button-demo");
+        addCard("Custom Overflow Button Demo", createResizableContainer(toolbarLayout));
     }
 
     private void createReverseCollapseDemo() {
