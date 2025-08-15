@@ -22,7 +22,6 @@ import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
@@ -46,7 +45,8 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
 
     @Override
     protected void initView() {
-        add(new H1("Use examples"));
+        getStyle().set("padding-top", "25px");
+
         createBasicDemo();
         createMultiComponentDemo();
         createCustomOverflowButtonDemo();
