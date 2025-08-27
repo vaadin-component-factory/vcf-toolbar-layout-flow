@@ -4,6 +4,8 @@ ToolbarLayout is a server-side Vaadin component built on top of the [<vcf-toolba
 
 This component is part of Vaadin Component Factory.
 
+![example.jpg](screenshots/example.jpg)
+
 ## Features
 
 - **Overflow Handling:**  
