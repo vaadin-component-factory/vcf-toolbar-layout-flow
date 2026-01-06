@@ -82,7 +82,26 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
         getElement().setProperty("updateDebounceDelay", delay);
     }
 
+    // ==================================================
+    // MenuBar-like API for easy migration from MenuBar
+    // ==================================================
 
+    /**
+     * Creates a new {@link MenuItem} component with the provided text content and icon
+     * and adds it to the root level of this menu bar.
+     * <p>
+     * The added {@link MenuItem} component is placed inside a button in the
+     * menu bar. If this button overflows the menu bar horizontally, the
+     * {@link MenuItem} is moved out of the button, into a context menu openable
+     * via an overflow button at the end of the button row.
+     * <p>
+     * To add content to the sub menu opened by clicking the root level item,
+     * use {@link MenuItem#getSubMenu()}.
+     *
+     * @param text
+     *            the text content for the new item
+     * @return the added {@link MenuItem} component
+     */
     public MenuItem addItem(String text, Component icon) {
         MenuBar menuBar = createMenuBar();
         add(menuBar);
@@ -91,10 +110,6 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
         button.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
         return menuBar.addItem(button);
     }
-
-    // ==================================================
-    // MenuBar-like API for easy migration from MenuBar
-    // ==================================================
 
     /**
      * Creates a new {@link MenuItem} component with the provided text content
@@ -119,18 +134,10 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
     }
 
     /**
-     * Creates a new {@link MenuItem} component and adds it to the root level of
-     * this menu bar. The provided component is added into the created
-     * {@link MenuItem}.
+     * Adds the given component to the toolbar.
      * <p>
-     * The added {@link MenuItem} component is placed inside a button in the
-     * menu bar. If this button overflows the menu bar horizontally, the
-     * {@link MenuItem} is moved out of the button, into a context menu openable
-     * via an overflow button at the end of the button row.
-     * <p>
-     * To add content to the sub menu opened by clicking the root level item,
-     * use {@link MenuItem#getSubMenu()}.
-     *
+     * Please note, that there is no {@link MenuItem} created. Modify the component directly if necessary.
+     * </p>
      * @param component
      *            the component to add inside new item
      */
@@ -165,17 +172,12 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
     }
 
     /**
-     * Creates a new {@link MenuItem} component with the provided click listener
-     * and adds it to the root level of this menu bar. The provided component is
-     * added into the created {@link MenuItem}.
+     * A convenience method to add a component and register a click listener on it. However, if the given component
+     * provides a built-in click listener, it is recommended, to use that instead and add the component using
+     * {@link #addItem(Component)} (e.g. for {@link Button}.
      * <p>
-     * The added {@link MenuItem} component is placed inside a button in the
-     * menu bar. If this button overflows the menu bar horizontally, the
-     * {@link MenuItem} is moved out of the button, into a context menu openable
-     * via an overflow button at the end of the button row.
-     * <p>
-     * To add content to the sub menu opened by clicking the root level item,
-     * use {@link MenuItem#getSubMenu()}.
+     * Please note, that there is no {@link MenuItem} created. Modify the component directly if necessary.
+     * </p>
      *
      * @param component
      *            the component to add inside the added menu item
@@ -183,10 +185,18 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
      *            the handler for clicking the new item, can be {@code null} to
      *            not add listener
      */
-    public void addItem(Component component,
-                            ComponentEventListener<ClickEvent<MenuItem>> clickListener) {
-        component.getElement().addEventListener("click", e -> clickListener.onComponentEvent(new ClickEvent<>(component)));
-        addItem(component, clickListener);
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public <T extends Component> void addItem(T component,
+                                              ComponentEventListener<ClickEvent<T>> clickListener) {
+        // if the component provides a click listener integration, we use that
+        if(component instanceof ClickNotifier cn) {
+            cn.addClickListener(clickListener);
+        } else {
+            component.getElement().addEventListener("click",
+                    e -> clickListener.onComponentEvent(new ClickEvent<>(component)));
+        }
+
+        add(component);
     }
 
     /**
@@ -212,31 +222,6 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
         setMenuItemTooltipText(item, tooltipText);
         return item;
     }
-
-//    /**
-//     * Creates a new {@link MenuItem} component with the provided tooltip text
-//     * and adds it to the root level of this menu bar. The provided component is
-//     * added into the created {@link MenuItem}.
-//     * <p>
-//     * The added {@link MenuItem} component is placed inside a button in the
-//     * menu bar. If this button overflows the menu bar horizontally, the
-//     * {@link MenuItem} is moved out of the button, into a context menu openable
-//     * via an overflow button at the end of the button row.
-//     * <p>
-//     * To add content to the sub menu opened by clicking the root level item,
-//     * use {@link MenuItem#getSubMenu()}.
-//     *
-//     * @param component
-//     *            the component to add inside new item
-//     * @param tooltipText
-//     *            the tooltip text for the new item
-//     * @return the added {@link MenuItem} component
-//     */
-//    public MenuItem addItem(Component component, String tooltipText) {
-//        var item = addItem(component);
-//        setMenuItemTooltipText(item, tooltipText);
-//        return item;
-//    }
 
     /**
      * Creates a new {@link MenuItem} component with the provided text content
@@ -266,35 +251,6 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
         setMenuItemTooltipText(item, tooltipText);
         return item;
     }
-
-//    /**
-//     * Creates a new {@link MenuItem} component with the provided click listener
-//     * and the tooltip text and adds it to the root level of this menu bar. The
-//     * provided component is added into the created {@link MenuItem}.
-//     * <p>
-//     * The added {@link MenuItem} component is placed inside a button in the
-//     * menu bar. If this button overflows the menu bar horizontally, the
-//     * {@link MenuItem} is moved out of the button, into a context menu openable
-//     * via an overflow button at the end of the button row.
-//     * <p>
-//     * To add content to the sub menu opened by clicking the root level item,
-//     * use {@link MenuItem#getSubMenu()}.
-//     *
-//     * @param component
-//     *            the component to add inside the added menu item
-//     * @param tooltipText
-//     *            the tooltip text for the new item
-//     * @param clickListener
-//     *            the handler for clicking the new item, can be {@code null} to
-//     *            not add listener
-//     * @return the added {@link MenuItem} component
-//     */
-//    public MenuItem addItem(Component component, String tooltipText,
-//                            ComponentEventListener<ClickEvent<MenuItem>> clickListener) {
-//        var item = addItem(component, clickListener);
-//        setTooltipText(item, tooltipText);
-//        return item;
-//    }
 
     /**
      * Sets the event which opens the sub menus of the root level buttons.
