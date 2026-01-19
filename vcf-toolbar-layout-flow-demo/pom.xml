@@ -72,21 +72,20 @@
             <artifactId>vaadin-testbench</artifactId>
             <scope>test</scope>
         </dependency>
-
+      
+	    <dependency>
+           <groupId>com.vaadin</groupId>
+           <artifactId>vaadin-dev</artifactId>
+           <optional>true</optional>
+        </dependency>
+        
         <!-- Component -->
         <dependency>
 			<groupId>org.vaadin.addons.componentfactory</groupId>
 			<artifactId>vcf-toolbar-layout-flow</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
-        <!-- demo specific -->
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>flow-component-demo-helpers</artifactId>
-            <version>9.2.3</version>
-        </dependency>
-
+              
         <!-- externals -->
         <dependency>
             <groupId>org.slf4j</groupId>

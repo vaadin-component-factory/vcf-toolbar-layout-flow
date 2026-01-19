@@ -22,7 +22,6 @@ import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.menubar.MenuBarVariant;
@@ -45,7 +44,8 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
 
     @Override
     protected void initView() {
-        getStyle().set("padding-top", "25px");
+        getStyle().set("padding-top", "20px");
+        getStyle().set("padding-bottom", "20px");
 
         createBasicDemo();
         createMultiComponentDemo();
@@ -56,15 +56,9 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         createFixedWidthPrefixDemo();
         createHideIconsDemo();
         createMenuBarApiDemo();
-
-        // show the helper methods used in the demos
-        addCard("Demo Helper Methods", new Span("Below are some of the helper methods used in the demos."));
-
     }
 
     private void createBasicDemo() {
-        // begin-source-example
-        // source-example-heading: Basic Demo
         ToolbarLayout toolbarLayout = new ToolbarLayout();
         toolbarLayout.add(
                 new Button("Button 1"),
@@ -72,15 +66,12 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
                 new Button("Button 3"),
                 new Button("Button 4")
         );
-        // end-source-example
 
         toolbarLayout.setId("basic-demo");
         addCard("Basic Demo", createResizableContainer(toolbarLayout));
     }
 
     private void createMultiComponentDemo() {
-        // begin-source-example
-        // source-example-heading: Multi Component Demo
         ToolbarLayout toolbarLayout = new ToolbarLayout();
 
         TextField search = new TextField();
@@ -108,15 +99,12 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         comboBox.setItems("Item 1", "Item 2", "Item 3");
 
         toolbarLayout.add(search, download, remove, dropdown, link, comboBox);
-        // end-source-example
 
         toolbarLayout.setId("multi-component-demo");
         addCard("Multi Component Demo", createResizableContainer(toolbarLayout));
     }
 
     private void createCustomOverflowButtonDemo() {
-        // begin-source-example
-        // source-example-heading: Custom Overflow Button Demo
         ToolbarLayout toolbarLayout = new ToolbarLayout();
 
         Button customOverflowButton = new Button("Open");
@@ -124,39 +112,30 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         toolbarLayout.setOverflowButton(customOverflowButton);
 
         addComponentsToToolbar(toolbarLayout);
-        // end-source-example
-
+        
         toolbarLayout.setId("custom-overflow-button-demo");
         addCard("Custom Overflow Button Demo", createResizableContainer(toolbarLayout));
     }
 
     private void createReverseCollapseDemo() {
-        // begin-source-example
-        // source-example-heading: Reverse Collapse Demo
         ToolbarLayout toolbarLayout = new ToolbarLayout();
         toolbarLayout.setReverseCollapseOrder(true);
         addComponentsToToolbar(toolbarLayout);
-        // end-source-example
 
         toolbarLayout.setId("reverse-collapse-demo");
         addCard("Reverse Collapse Demo", createResizableContainer(toolbarLayout));
     }
 
     private void createDebounceDelayDemo() {
-        // begin-source-example
-        // source-example-heading: Debounce Delay Demo
         ToolbarLayout toolbarLayout = new ToolbarLayout();
         toolbarLayout.setUpdateDebounceDelay(500);
         addComponentsToToolbar(toolbarLayout);
-        // end-source-example
 
         toolbarLayout.setId("debounce-delay-demo");
         addCard("Debounce Delay Demo", createResizableContainer(toolbarLayout));
     }
 
     private void createMultiLevelDemo() {
-        // begin-source-example
-        // source-example-heading: Multi-level Demo
         ToolbarLayout toolbarLayout = new ToolbarLayout();
 
         // adding an item via the addItem(String) api returns a MenuItem which can be used to add submenus
@@ -176,15 +155,11 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         menuBarItem.getSubMenu().addItem("Child Item 2");
         toolbarLayout.add(menuBar);
 
-        // end-source-example
-
         toolbarLayout.setId("multi-level-demo");
         addCard("Multi-level Demo", createResizableContainer(toolbarLayout));
     }
 
     private void createFixedWidthPrefixDemo() {
-        // begin-source-example
-        // source-example-heading: Theme: Fixed Width Prefix
         ToolbarLayout toolbarLayout = new ToolbarLayout();
         toolbarLayout.addThemeVariants(ToolbarLayoutVariant.FIXED_WIDTH_PREFIX);
 
@@ -212,15 +187,12 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         link.setTarget("_blank");
 
         toolbarLayout.add(search, download, edit, save, dropdown, link);
-        // end-source-example
 
         toolbarLayout.setId("theme-width-prefix");
         addCard("Theme: Fixed Width Prefix", createResizableContainer(toolbarLayout));
     }
 
     private void createHideIconsDemo() {
-        // begin-source-example
-        // source-example-heading: Theme: Hide Icons
         ToolbarLayout toolbarLayout = new ToolbarLayout();
         toolbarLayout.addThemeVariants(ToolbarLayoutVariant.HIDE_ICONS);
 
@@ -233,16 +205,12 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         iconOnly.addThemeVariants(ButtonVariant.LUMO_ICON);
 
         toolbarLayout.add(prefix, suffix, iconOnly);
-        // end-source-example
 
         toolbarLayout.setId("theme-hide-icons");
         addCard("Theme: Hide Icons", createResizableContainer(toolbarLayout));
     }
 
     private void createMenuBarApiDemo() {
-        // begin-source-example
-        // source-example-heading: MenuBar-like API
-
         ToolbarLayout toolbarLayout = new ToolbarLayout();
 
         // Tier 1: Dashboard (simple)
@@ -284,14 +252,10 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         aboutSub.addItem("Version", e -> Notification.show("App version 2.3.1"));
         aboutSub.addItem("License", e -> Notification.show("Licensed under Apache 2.0"));
 
-        // end-source-example
-
         toolbarLayout.setId("menubar-like-api-demo");
         addCard("MenuBar-like API", createResizableContainer(toolbarLayout));
     }
 
-    // begin-source-example
-    // source-example-heading: Demo Helper Methods
     private void addComponentsToToolbar(ToolbarLayout toolbarLayout) {
         TextField search = new TextField();
         search.setPlaceholder("Search");
@@ -326,5 +290,4 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         container.setMinWidth(50, Unit.PIXELS);
         return container;
     }
-    // end-source-example
 }
