@@ -1,0 +1,6 @@
+vcf-toolbar-layout vaadin-menu-bar-item vaadin-button[theme~="tertiary-inline"] {
+  padding: 0;
+  min-width: 0;
+  height: auto;
+  line-height: inherit;
+}

@@ -15,12 +15,11 @@ package org.vaadin.addons.componentfactory.toolbarlayout;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.menubar.MenuBar;
-import com.vaadin.flow.component.menubar.MenuBarVariant;
 import com.vaadin.flow.component.shared.HasThemeVariant;
 
 import java.util.List;
@@ -36,6 +35,7 @@ import java.util.stream.Collectors;
 @JsModule("@vaadin-component-factory/vcf-toolbar-layout/dist/src/vcf-toolbar-layout.js")
 // for local testing, copy files from js project to: src/main/resources/META-INF/resources/frontend/
 // @JsModule("src/vcf-toolbar-layout.js")
+@CssImport("./styles/toolbar-layout-styles.css")
 public class ToolbarLayout extends Component implements HasOrderedComponents, HasSize, HasStyle, HasThemeVariant<ToolbarLayoutVariant>
 {
     private static final String OVERFLOW_BUTTON_SLOT = "overflow-button";
@@ -58,9 +58,9 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
         // update existing menu bars
         findAllMenuBars().forEach(menuBar -> {
             if (isDropdownIndicatorShown)
-                menuBar.addThemeVariants(MenuBarVariant.LUMO_DROPDOWN_INDICATORS);
+                menuBar.addThemeNames("dropdown-indicators");
             else
-                menuBar.removeThemeVariants(MenuBarVariant.LUMO_DROPDOWN_INDICATORS);
+                menuBar.removeThemeNames("dropdown-indicators");
         });
     }
 
@@ -107,7 +107,7 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
         add(menuBar);
 
         Button button = new Button(text, icon);
-        button.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        button.addThemeNames("tertiary", "tertiary-inline");
         return menuBar.addItem(button);
     }
 
@@ -325,7 +325,7 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
     private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
         menuBar.setOpenOnHover(isOpenHover);
-        menuBar.addThemeVariants(MenuBarVariant.LUMO_DROPDOWN_INDICATORS);
+        menuBar.addThemeNames("dropdown-indicators");
         return menuBar;
     }
 
