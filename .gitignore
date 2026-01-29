@@ -38,7 +38,7 @@ vcf-toolbar-layout-flow-demo/vite.config.ts
 vcf-toolbar-layout-flow-demo/vite.generated.ts
 
 # ide configurations
-.vscode/settings.json
+.vscode
 .settings
 .classpath
 .project
