@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("serial")
 @Tag("vcf-toolbar-layout")
-@NpmPackage(value = "@vaadin-component-factory/vcf-toolbar-layout", version = "2.0.1")
+@NpmPackage(value = "@vaadin-component-factory/vcf-toolbar-layout", version = "2.0.2")
 @JsModule("@vaadin-component-factory/vcf-toolbar-layout/dist/src/vcf-toolbar-layout.js")
 // for local testing, copy files from js project to: src/main/resources/META-INF/resources/frontend/
 // @JsModule("src/vcf-toolbar-layout.js")
