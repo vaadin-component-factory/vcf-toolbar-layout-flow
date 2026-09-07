@@ -22,6 +22,8 @@ This component is part of Vaadin Component Factory.
   Each item is its own tab stop. The overflow popup is a modal dialog: it traps focus, moves focus
   into itself when opened, closes on `Escape` and returns focus to the overflow button. When a
   focused item collapses into the overflow, focus moves to the overflow button instead of being lost.
+  Menu bars created by `addItem(...)` use tab navigation rather than a roving tabindex; a `MenuBar`
+  you add yourself should call `setTabNavigation(true)` to match.
 - **Localization:**  
   The accessible names of the overflow button and the overflow popup can be localized with
   `setI18n(ToolbarLayoutI18n)`.

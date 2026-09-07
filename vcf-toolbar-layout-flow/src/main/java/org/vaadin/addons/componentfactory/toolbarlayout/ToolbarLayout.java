@@ -450,6 +450,9 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
     private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
         menuBar.setOpenOnHover(isOpenHover);
+        // every toolbar item is its own tab stop, so the menu bar must not use
+        // a roving tabindex for its root level items
+        menuBar.setTabNavigation(true);
         menuBar.addThemeNames("dropdown-indicators");
         return menuBar;
     }
