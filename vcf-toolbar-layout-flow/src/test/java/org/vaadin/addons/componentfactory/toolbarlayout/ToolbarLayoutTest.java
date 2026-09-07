@@ -15,12 +15,9 @@
  */
 package org.vaadin.addons.componentfactory.toolbarlayout;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.vaadin.flow.component.UI;
 
@@ -31,13 +28,13 @@ public class ToolbarLayoutTest {
 
     private UI ui;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ui = new UI();
         UI.setCurrent(ui);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         UI.setCurrent(null);
     }

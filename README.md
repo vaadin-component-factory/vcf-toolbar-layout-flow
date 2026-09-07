@@ -51,6 +51,9 @@ This profile, when enabled, will create the zip file for uploading to Vaadin's d
 This profile, when enabled, will execute a production build for the demo
 
 ## Using the component in a Flow application
+Requires **Vaadin 25.2 or newer** — the underlying web component uses the `I18nMixin` API
+introduced in `@vaadin/component-base` 25.2.0. Use version 2.0.3 of this add-on for Vaadin 25.0/25.1.
+
 To use the component in an application using maven,
 add the following dependency to your `pom.xml`:
 ```
