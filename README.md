@@ -18,8 +18,13 @@ This component is part of Vaadin Component Factory.
   Two additional themes are provided:
     - **`FIXED_WIDTH_PREFIX`** – aligns overflow popover items uniformly regardless of whether they include a prefix icon.
     - **`HIDE_ICONS`** – automatically hides icons on items within the overflow popover.
-- **Keyboard Navigation:**  
-  Complete keyboard support for menu navigation.
+- **Keyboard & Screen Reader Support:**  
+  Each item is its own tab stop. The overflow popup is a modal dialog: it traps focus, moves focus
+  into itself when opened, closes on `Escape` and returns focus to the overflow button. When a
+  focused item collapses into the overflow, focus moves to the overflow button instead of being lost.
+- **Localization:**  
+  The accessible names of the overflow button and the overflow popup can be localized with
+  `setI18n(ToolbarLayoutI18n)`.
 - **Grouping Items:**  
   Group items by passing in a layout (such as HorizontalLayout); grouped items collapse and display together in the overflow popover.
 
@@ -176,6 +181,30 @@ Button iconOnly = new Button("Icon Only", VaadinIcon.COG.create());
 iconOnly.addThemeVariants(ButtonVariant.LUMO_ICON);
 
 toolbarLayout.add(prefix, suffix, iconOnly);
+```
+
+### Localization
+
+The accessible names of the default overflow button and of the overflow popup default to
+`"More options"`. Both can be replaced:
+
+```java
+ToolbarLayout toolbarLayout = new ToolbarLayout();
+toolbarLayout.setI18n(new ToolbarLayout.ToolbarLayoutI18n()
+        .setMoreOptions("Plus d'options")
+        .setOverflowMenu("Éléments masqués"));
+```
+
+Properties left unset keep their default, so a single text can be overridden on its own.
+
+Only the default overflow button is labelled this way. A button passed to
+`setOverflowButton(Button)` keeps whatever accessible name it was given, so an icon-only custom
+button needs one set explicitly:
+
+```java
+Button overflowButton = new Button(VaadinIcon.ELLIPSIS_DOTS_V.create());
+overflowButton.setAriaLabel("More options");
+toolbarLayout.setOverflowButton(overflowButton);
 ```
 
 ## Flow documentation

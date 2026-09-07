@@ -13,6 +13,7 @@
  */
 package org.vaadin.addons.componentfactory.toolbarlayout;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.contextmenu.MenuItem;
@@ -21,8 +22,13 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.shared.HasThemeVariant;
+import com.vaadin.flow.function.SerializableConsumer;
+import com.vaadin.flow.internal.JacksonUtils;
+import tools.jackson.databind.node.ObjectNode;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,6 +49,8 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
     // properties passed to children MenuBar components
     private boolean isOpenHover = false;
     private boolean isDropdownIndicatorShown = true;
+
+    private ToolbarLayoutI18n i18n;
 
     public ToolbarLayout() {
         super();
@@ -304,6 +312,11 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
     /**
      * Provide a custom button to be used as the overflow button. This will replace any other overflow
      * button that may have been set previously.
+     * <p>
+     * Note that {@link ToolbarLayoutI18n#setMoreOptions(String)} only labels the default overflow
+     * button. A custom button keeps whatever accessible name it was given, so an icon-only button
+     * should be given one explicitly with
+     * {@link com.vaadin.flow.component.HasAriaLabel#setAriaLabel(String)}.
      *
      * @param overflowButton the button to use as the overflow button, or {@code null} to remove any existing overflow button
      *                       and revert to the default overflow button
@@ -319,6 +332,118 @@ public class ToolbarLayout extends Component implements HasOrderedComponents, Ha
             // must set slot to overflow-button in order for component to recognize it as the overflow button
             overflowButton.getElement().setAttribute("slot", OVERFLOW_BUTTON_SLOT);
             add(overflowButton);
+        }
+    }
+
+    /**
+     * Gets the internationalization object previously set for this component.
+     * <p>
+     * NOTE: Updating the instance that is returned from this method will not
+     * update the component if not set again using
+     * {@link #setI18n(ToolbarLayoutI18n)}
+     *
+     * @return the i18n object or {@code null} if no i18n object has been set
+     */
+    public ToolbarLayoutI18n getI18n() {
+        return i18n;
+    }
+
+    /**
+     * Sets the internationalization object for this component.
+     * <p>
+     * Properties left {@code null} on the given object keep the web component's
+     * default value, so a partial object can be used to override a single text.
+     *
+     * @param i18n
+     *            the i18n object, not {@code null}
+     */
+    public void setI18n(ToolbarLayoutI18n i18n) {
+        this.i18n = Objects.requireNonNull(i18n,
+                "The i18n properties object should not be null");
+
+        runBeforeClientResponse(ui -> {
+            if (i18n == this.i18n) {
+                setI18nWithJS();
+            }
+        });
+    }
+
+    private void setI18nWithJS() {
+        ObjectNode i18nJson = JacksonUtils.beanToJson(i18n);
+
+        // Assign new I18N object to WC, by merging the existing
+        // WC I18N, and the values from the new ToolbarLayoutI18n instance,
+        // into an empty object
+        getElement().executeJs("this.i18n = Object.assign({}, this.i18n, $0);",
+                i18nJson);
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        super.onAttach(attachEvent);
+
+        // Element state is not persisted across attach/detach
+        if (this.i18n != null) {
+            setI18nWithJS();
+        }
+    }
+
+    private void runBeforeClientResponse(SerializableConsumer<UI> command) {
+        getElement().getNode().runWhenAttached(ui -> ui
+                .beforeClientResponse(this, context -> command.accept(ui)));
+    }
+
+    /**
+     * The internationalization properties for {@link ToolbarLayout}
+     */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class ToolbarLayoutI18n implements Serializable {
+        private String moreOptions;
+        private String overflowMenu;
+
+        /**
+         * Gets the accessible name of the default overflow button.
+         *
+         * @return the overflow button aria-label
+         */
+        public String getMoreOptions() {
+            return moreOptions;
+        }
+
+        /**
+         * Sets the accessible name of the default overflow button.
+         * <p>
+         * This does not apply to a custom button set with
+         * {@link ToolbarLayout#setOverflowButton(Button)}.
+         *
+         * @param moreOptions
+         *            the overflow button aria-label
+         * @return this instance for method chaining
+         */
+        public ToolbarLayoutI18n setMoreOptions(String moreOptions) {
+            this.moreOptions = moreOptions;
+            return this;
+        }
+
+        /**
+         * Gets the accessible name of the popup holding the overflowed items.
+         *
+         * @return the overflow popup aria-label
+         */
+        public String getOverflowMenu() {
+            return overflowMenu;
+        }
+
+        /**
+         * Sets the accessible name of the popup holding the overflowed items.
+         *
+         * @param overflowMenu
+         *            the overflow popup aria-label
+         * @return this instance for method chaining
+         */
+        public ToolbarLayoutI18n setOverflowMenu(String overflowMenu) {
+            this.overflowMenu = overflowMenu;
+            return this;
         }
     }
 
