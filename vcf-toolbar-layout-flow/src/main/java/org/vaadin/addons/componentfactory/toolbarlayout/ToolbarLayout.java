@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 @Tag("vcf-toolbar-layout")
 @NpmPackage(value = "@vaadin-component-factory/vcf-toolbar-layout", version = "2.1.0")
 @JsModule("@vaadin-component-factory/vcf-toolbar-layout/dist/src/vcf-toolbar-layout.js")
-// for local testing, copy files from js project to: src/main/resources/META-INF/resources/frontend/
+// for local testing, copy files from js project to: src/main/resources/META-INF/frontend/
 // @JsModule("src/vcf-toolbar-layout.js")
 @CssImport("./styles/toolbar-layout-styles.css")
 public class ToolbarLayout extends Component implements HasOrderedComponents, HasSize, HasStyle, HasThemeVariant<ToolbarLayoutVariant>
