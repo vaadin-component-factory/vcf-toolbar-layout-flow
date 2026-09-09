@@ -50,6 +50,7 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         createBasicDemo();
         createMultiComponentDemo();
         createCustomOverflowButtonDemo();
+        createLocalizationDemo();
         createReverseCollapseDemo();
         createDebounceDelayDemo();
         createMultiLevelDemo();
@@ -115,6 +116,18 @@ public class ToolbarLayoutDemoView extends AbstractDemoView {
         
         toolbarLayout.setId("custom-overflow-button-demo");
         addCard("Custom Overflow Button Demo", createResizableContainer(toolbarLayout));
+    }
+
+    private void createLocalizationDemo() {
+        ToolbarLayout toolbarLayout = new ToolbarLayout();
+        toolbarLayout.setI18n(new ToolbarLayout.ToolbarLayoutI18n()
+                .setMoreOptions("Plus d'options")
+                .setOverflowMenu("Éléments masqués"));
+
+        addComponentsToToolbar(toolbarLayout);
+
+        toolbarLayout.setId("localization-demo");
+        addCard("Localization Demo", createResizableContainer(toolbarLayout));
     }
 
     private void createReverseCollapseDemo() {
